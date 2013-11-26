@@ -1,0 +1,16 @@
+
+
+
+
+//code snippet for loading the form with two diffrent action options.
+// the problem is that php loads the page before the fields can be completed.  This should be handled //by javascript?
+
+<form <?php if(isset($lastname) && isset($firstname) && isset($street) && isset($city) && isset($state) && isset($zip) && isset($phone)){
+		echo 'action="success.php"';
+	} else{
+		echo 'action="forms.php"';
+	}
+	?> method="post" name="testform" id="testform" onsubmit="return validateform();">
+
+//needs to be removed to check validation...  validation is done by java, but then needs to be server //side validated?
+	onsubmit="return validateform();"
