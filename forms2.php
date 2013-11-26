@@ -28,7 +28,7 @@ include "functions.php";
 
 <h1>Homework  01</h1>
 <p style="font-style: italic; font-size: 0.7em"><span>&#42 fields marked with red asterisk are required</span></p>
-<form action="forms2.php" method="post" name="testform" id="testform">
+<form action="forms2.php" method="post" name="testform" id="testform" onsubmit="return validateform();">
  
 
 <fieldset>
