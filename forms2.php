@@ -11,6 +11,11 @@
 //include needed $_REQUEST calls
 include "request.php";
 
+//session_start data... store it for other pages.  Specifically for the success.php page
+session_start();
+$_SESSION['lastname']   = $_POST['lastname'];
+$_SESSION['firstname']   = $_POST['firstname'];
+
 //test to see if required input is satisfied.  If yes, go to success.php
 	if( !empty($lastname) && !empty($firstname) && !empty($street) && !empty($city) && !empty($state) && !empty($zip) && !empty($phone)){
 		header('Location: success.php');
