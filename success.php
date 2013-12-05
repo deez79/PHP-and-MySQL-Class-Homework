@@ -6,7 +6,12 @@
 		<title>Success</title>
 		<link rel="stylesheet" href="styles.css" type="text/css" /> 
 		<?php
-		include "request.php";
+		//include "request.php"; #nolonger needed
+		
+		//use $_SESSION to receive passed variables from form
+		session_start();
+		$firstname   = $_SESSION['firstname'];
+		$lastname   = $_SESSION['lastname'];
 		?>
 
 	</head>
