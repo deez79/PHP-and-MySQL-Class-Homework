@@ -16,7 +16,7 @@ Upcoming Goals:
 
 1. Use $_POST instead of $_REQUEST for all variables created
 
-2. Figure out how to call variables from forms.php to sucess.php
+~~2. Figure out how to call variables from forms.php to sucess.php~~
 
 3. Create validation function using SWITCH
 
