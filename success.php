@@ -17,7 +17,7 @@
 	</head>
 	<body>
 		<?php
-		echo "<p>Thank you " . $firstname . $lastname . "for sucessfully submitting your form. </p>";
+		echo "<p>Thank you " . $firstname . ' ' . $lastname . " for sucessfully submitting your form. </p>";
 		?>
 				
 	</body>
