@@ -3,13 +3,13 @@
 
 <title>HW Assignement 01 PHP and MySQL Class</title>
 
-<link rel="stylesheet" href="styles.css" type="text/css" /> 
+<link rel="stylesheet" href="style/styles.css" type="text/css" /> 
 
-<script language="javascript" type="text/javascript" src="validation.js">
+<script language="javascript" type="text/javascript" src="js/validation.js">
 </script>
 <?php
 //include needed $_REQUEST calls
-include "request.php";
+include "includes/request.php";
 
 //session_start data... store it for other pages.  Specifically for the success.php page
 session_start();
@@ -22,7 +22,7 @@ $_SESSION['firstname']   = $_POST['firstname'];
 		exit;
 	} 
 //include php functions
-include "functions.php";
+include "includes/functions.php";
 
 ?>
 
