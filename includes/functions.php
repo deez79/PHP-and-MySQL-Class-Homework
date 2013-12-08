@@ -4,7 +4,7 @@
 function checkedBoxFunc($inputName, $value){
 	/**************************************
 	*	$inputName is the string name for the checkbox input
-	*	ex: <input type="checkbox" name="foo" value="bar" <?php checkedBoxFunc("plan", "day"); ?> />
+	*	ex: <input type="checkbox" name="foo" value="bar" <?php checkedBoxFunc("foo", "bar"); ?> />
 	*
 	***************************************/
 	foreach ($_REQUEST[$inputName] as $inputValues){
