@@ -122,7 +122,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 	}else {// if there are errors, report the errors
 		echo 'Something is wrong!';
-		echo '<script language="javascript" type="text/javascript">window.onload = function(){validateform();}; </script>'; 
+		echo '<script language="javascript" type="text/javascript">window.onload = function(){validateform();}; </script>';
 		echo 'These are the errors:';
 		foreach ($errors as $msg) {
 			echo "- $msg";
