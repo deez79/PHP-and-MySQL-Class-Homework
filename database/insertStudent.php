@@ -1,0 +1,1 @@
+INSERT INTO student VALUES (null, $lastname, $firstname, $initial, $street, $city, $state, $zip, $phone, $major, $minor); 

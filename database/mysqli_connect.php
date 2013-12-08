@@ -1,4 +1,14 @@
 <?php 
+
+#####################################################################
+#
+#	Ideally this file would be contained outside the htdocs folder.
+#		For this homework assignment it will live in the folder
+#		named database, but this is not the most secure location.
+#		(Although, becuase there is no html in this doc it will not display
+#		anything if accessed directly via a browser.)
+#
+######################################################################
 	
 	/*
 	//saved variable names for log on at caps:
