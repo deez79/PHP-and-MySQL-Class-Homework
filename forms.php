@@ -2,38 +2,45 @@
 <head>
 
 <title>HW Assignement 01 PHP and MySQL Class</title>
-
 <link rel="stylesheet" href="style/styles.css" type="text/css" /> 
+<script language="javascript" type="text/javascript" src="js/validation.js"></script>
 
-<script language="javascript" type="text/javascript" src="js/validation.js">
-</script>
 <?php
 //include needed $_REQUEST calls
-include "includes/request.php";
+include ('includes/request.php');
+//include php functions
+include ('includes/functions.php');
 
-//session_start data... store it for other pages.  Specifically for the success.php page
-session_start();
-$_SESSION['lastname']   = $_POST['lastname'];
-$_SESSION['firstname']   = $_POST['firstname'];
+//Check for Form Submission:
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	//test to see if required input is satisfied. (some validation)  If yes, go to success.php
+	if( !empty($lastname) && !empty($firstname) && !empty($street) && !empty($city) && !empty($state) && !empty($zip) && !empty($phone)) {//if valid:
 
-//test to see if required input is satisfied.  If yes, go to success.php
-	if( !empty($lastname) && !empty($firstname) && !empty($street) && !empty($city) && !empty($state) && !empty($zip) && !empty($phone)){
+		//session_start data... store it for other pages.  Specifically for the success.php page
+		session_start();
+		$_SESSION['lastname']   = $_POST['lastname'];
+		$_SESSION['firstname']   = $_POST['firstname'];
+
+		//go to success.php
 		header('Location: success.php');
 		exit;
-	} 
-//include php functions
-include "includes/functions.php";
+	} else {
+		echo '<script language="javascript" type="text/javascript">window.onload = function(){validateform();}; </script>';
+	}
 
+}
 ?>
 
 </head>
-<body>
 
+
+<body>
 <div id="container">
+
 
 <h1>Homework  01</h1>
 <p style="font-style: italic; font-size: 0.7em"><span>&#42 fields marked with red asterisk are required</span></p>
-<form action="forms.php" method="post" name="testform" id="testform" onsubmit="return validateform();">
+<form action="forms.php" method="post" name="testform" id="testform">
  
 
 <fieldset>
