@@ -121,14 +121,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 	}else {// if there are errors, report the errors
-		echo 'Something is wrong!';
+		echo 'Something is wrong!' . "\n";
 		echo '<script language="javascript" type="text/javascript">window.onload = function(){validateform();}; </script>';
 		echo 'These are the errors:';
 		foreach ($errors as $msg) {
-			echo "- $msg";
+			echo "- $msg";   
 
 		} //end foreach
-		echo 'Try again!';
+		echo "\n" . 'Try again!';
 	} //end of if(empty($errors)) IF.
 	mysql_close($dbc); //close the connection to the DB
 }  //end of the main submit conditional
@@ -146,6 +146,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <p style="font-style: italic; font-size: 0.7em"><span>&#42 fields marked with red asterisk are required</span></p>
 <form action="forms.php" method="post" name="testform" id="testform">
  
+<?php
+##############################
+#
+#
+#	______            _             _             _            _     _        _     _      
+#	| ___ \          (_)           | |           | |          | |   | |      | |   | |     
+#	| |_/ / ___  __ _ _ _ __    ___| |_ _   _  __| | ___ _ __ | |_  | |_ __ _| |__ | | ___ 
+#	| ___ \/ _ \/ _` | | '_ \  / __| __| | | |/ _` |/ _ \ '_ \| __| | __/ _` | '_ \| |/ _ \
+#	| |_/ /  __/ (_| | | | | | \__ \ |_| |_| | (_| |  __/ | | | |_  | || (_| | |_) | |  __/
+#	\____/ \___|\__, |_|_| |_| |___/\__|\__,_|\__,_|\___|_| |_|\__|  \__\__,_|_.__/|_|\___|
+#	             __/ |                                                                     
+#	            |___/                                                                      
+#
+#	Begin student table
+#
+?>
 
 <fieldset>
 <legend>Information Request Form</legend>
@@ -241,35 +257,60 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			</select>
 		</p>
 </div>
+<?php 
+#	                _          __       _             _            _     _        _     _      _ 
+#	               | |        / _|     | |           | |          | |   | |      | |   | |    | |
+#	  ___ _ __   __| |   ___ | |_   ___| |_ _   _  __| | ___ _ __ | |_  | |_ __ _| |__ | | ___| |
+#	 / _ \ '_ \ / _` |  / _ \|  _| / __| __| | | |/ _` |/ _ \ '_ \| __| | __/ _` | '_ \| |/ _ \ |
+#	|  __/ | | | (_| | | (_) | |   \__ \ |_| |_| | (_| |  __/ | | | |_  | || (_| | |_) | |  __/_|
+#	 \___|_| |_|\__,_|  \___/|_|   |___/\__|\__,_|\__,_|\___|_| |_|\__|  \__\__,_|_.__/|_|\___(_)
+#	                                                                                             
+#	end of student table!		                                                                                             
+#
+#########################################
+
+#########################################
+#
+#	 _                _       _                      __       _           _       _                     _     _        _     _        
+#	| |              (_)     (_)                    / _|     | |         (_)     | |                   | |   | |      | |   | |     _ 
+#	| |__   ___  __ _ _ _ __  _ _ __   __ _    ___ | |_   ___| |_ _   _   _ _ __ | |_ ___ _ __ ___  ___| |_  | |_ __ _| |__ | | ___(_)
+#	| '_ \ / _ \/ _` | | '_ \| | '_ \ / _` |  / _ \|  _| / __| __| | | | | | '_ \| __/ _ \ '__/ _ \/ __| __| | __/ _` | '_ \| |/ _ \  
+#	| |_) |  __/ (_| | | | | | | | | | (_| | | (_) | |   \__ \ |_| |_| | | | | | | ||  __/ | |  __/\__ \ |_  | || (_| | |_) | |  __/_ 
+#	|_.__/ \___|\__, |_|_| |_|_|_| |_|\__, |  \___/|_|   |___/\__|\__,_| |_|_| |_|\__\___|_|  \___||___/\__|  \__\__,_|_.__/|_|\___(_)
+#	             __/ |                 __/ |                         ______                                                           
+#	            |___/                 |___/                         |______|                                                          
+#
+#	begin of stu_interest table:
+#
+?>
 
 <div id="upper_bottom_box">
-<fieldset>
-	<p><legend>My Plan</legend></p>
-		<fieldset>
-		<legend id="spaceit">I intend to attend classes:</legend>
-		<label>Mostly in the day <input type="checkbox" name="plan[]" value="day" tabindex="100" <?php checkedBoxFunc("plan", "day"); ?> /></label>
-		 &nbsp  &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 
-		<label>Mostly in the evening<input type="checkbox" name="plan[]" value="evening" <?php checkedBoxFunc("plan", "evening"); ?> /></label>
-		</fieldset>
 	<fieldset>
-   <legend>I intend to register for:</legend>
-   
-	<p>
-	<label>
-		<select name="number" tabindex="110" value="<?php echo $number; ?>">
-			<option value="one" <?php dropdownSelected("number", "one") ?> >1</option>
-			<option value="two" <?php dropdownSelected("number", "two") ?> >2</option>
-			<option value="three" <?php dropdownSelected("number", "three") ?> >3</option>
-			<option value="four" <?php dropdownSelected("number", "four") ?> >4</option>
-		</select>
-		&nbsp course&#40s&#41 per semester
-	</label>
+		<p><legend>My Plan</legend></p>
+		<fieldset>
+			<legend id="spaceit">I intend to attend classes:</legend>
+			<label>Mostly in the day <input type="checkbox" name="plan[]" value="day" tabindex="100" <?php checkedBoxFunc("plan", "day"); ?> /></label>
+			 &nbsp  &nbsp  &nbsp  &nbsp  &nbsp  &nbsp 
+			<label>Mostly in the evening<input type="checkbox" name="plan[]" value="evening" <?php checkedBoxFunc("plan", "evening"); ?> /></label>
+		</fieldset>
+		<fieldset>
+		   <legend>I intend to register for:</legend>
+		   
+			<p>
+			<label>
+				<select name="number" tabindex="110" value="<?php echo $number; ?>">
+					<option value="one" <?php dropdownSelected("number", "one") ?> >1</option>
+					<option value="two" <?php dropdownSelected("number", "two") ?> >2</option>
+					<option value="three" <?php dropdownSelected("number", "three") ?> >3</option>
+					<option value="four" <?php dropdownSelected("number", "four") ?> >4</option>
+				</select>
+				&nbsp course&#40s&#41 per semester
+			</label>
+			</p>
+	   </fieldset>
 	</p>
-	
-   </fieldset>
-</p>
 
-</fieldset>
+	</fieldset>
 
 </fieldset>
 
