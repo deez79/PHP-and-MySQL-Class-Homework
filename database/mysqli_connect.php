@@ -35,4 +35,3 @@
 	// Set the encoding...
 	mysqli_set_charset($dbc, 'utf8');
 	
- 

@@ -13,22 +13,126 @@ include ('includes/functions.php');
 
 //Check for Form Submission:
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	//test to see if required input is satisfied. (some validation)  If yes, go to success.php
-	if( !empty($lastname) && !empty($firstname) && !empty($street) && !empty($city) && !empty($state) && !empty($zip) && !empty($phone)) {//if valid:
 
-		//session_start data... store it for other pages.  Specifically for the success.php page
-		session_start();
-		$_SESSION['lastname']   = $_POST['lastname'];
-		$_SESSION['firstname']   = $_POST['firstname'];
+	//connect to database
+	require ('database/mysqli_connect.php'); 
 
-		//go to success.php
-		header('Location: success.php');
-		exit;
-	} else {
-		echo '<script language="javascript" type="text/javascript">window.onload = function(){validateform();}; </script>';
+	//using examples from Larry Ullman PHP and MySQL for Dynamic Websites Fourth Edition Chapter 9 Script 9.5 as basis for validation:
+	$errors = array(); //Initializing error array
+
+	//Check for a firstname:
+	if (empty($firstname)){
+		$errors[] = 'You forgot to enter a first name.';
+	} else{
+		$fn = mysqli_real_escape_string($dbc, trim($_POST['firstname']));
 	}
 
-}
+	//Check for a lastname:
+	if (empty($lastname)){
+		$errors[] = 'You forgot to enter a last name.';
+	} else{
+		$ln = mysqli_real_escape_string($dbc, trim($_POST['lastname']));
+	}
+
+	//Check for a middle initial:
+	if (empty($initial)){
+		$mn = null;
+	} else{
+		$mn = mysqli_real_escape_string($dbc, trim($_POST['initial']));
+	}
+
+	//Check for a street address:
+	if (empty($street)){
+		$errors[] = 'You forgot to enter a street address.';
+	} else{
+		$st = mysqli_real_escape_string($dbc, trim($_POST['street']));
+	}
+
+	//Check for a city:
+	if (empty($city)){
+		$errors[] = 'You forgot to enter a city.';
+	} else{
+		$ct = mysqli_real_escape_string($dbc, trim($_POST['city']));
+	}
+
+	//Check for a state:
+	if (empty($state)){
+		$errors[] = 'You forgot to enter a state.';
+	} else{
+		$S = mysqli_real_escape_string($dbc, trim($_POST['state']));
+	}
+
+	//Check for a zip:
+	if (empty($zip)){
+		$errors[] = 'You forgot to enter a zipcode.';
+	} else{
+		$zp = mysqli_real_escape_string($dbc, trim($_POST['zip']));
+	}
+
+	//Check for a phone:
+	if (empty($phone)){
+		$errors[] = 'You forgot to enter a phone number.';
+	} else{
+		$ph = mysqli_real_escape_string($dbc, trim($_POST['phone']));
+	}
+
+	//Check for a major:
+	if (empty($major)){
+		$errors[] = 'You forgot to enter a major.';
+	} else{
+		$ma = mysqli_real_escape_string($dbc, trim($_POST['major']));
+	}
+
+	//Check for a minor:
+	if (empty($minor)){
+		$mi = null;
+	} else{
+		$mi = mysqli_real_escape_string($dbc, trim($_POST['minor']));
+	}
+
+	if (empty($errors)) { //if there are no errors
+
+		//register user into database
+
+		//create query
+		$q = "INSERT INTO student VALUES (null, '$ln', '$fn', '$mn', '$st', '$ct', '$S', '$zp', '$ph', '$ma', '$mi')";
+		$r = @mysqli_query($dbc, $q); //run the query
+		if ($r) {//If it ran ok
+			echo 'it worked';
+
+			//session_start data... store it for other pages.  Specifically for the success.php page
+			session_start();
+			$_SESSION['lastname']   = $_POST['lastname'];
+			$_SESSION['firstname']   = $_POST['firstname'];
+
+			//go to success.php
+			header('Location: success.php');
+			exit();
+		} else { //The Query did not run OK
+			echo 'system error';
+
+			//debugging message:
+			echo mysqli_error($dbc) . '\n' . $q;
+		} //end of if $r
+
+		mysqli_close($dbc); //Close the DB connection
+
+
+
+
+	}else {// if there are errors, report the errors
+		echo 'Something is wrong!';
+		echo '<script language="javascript" type="text/javascript">window.onload = function(){validateform();}; </script>';
+		echo 'These are the errors:';
+		foreach ($errors as $msg) {
+			echo "- $msg";
+
+		} //end foreach
+		echo 'Try again!';
+	} //end of if(empty($errors)) IF.
+	mysql_close($dbc); //close the connection to the DB
+}  //end of the main submit conditional
+
 ?>
 
 </head>

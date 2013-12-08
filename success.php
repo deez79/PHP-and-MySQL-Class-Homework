@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Success</title>
-		<link rel="stylesheet" href="styles.css" type="text/css" /> 
+		<link rel="stylesheet" href="style/styles.css" type="text/css" /> 
 		<?php
 		//include "request.php"; #nolonger needed
 		
