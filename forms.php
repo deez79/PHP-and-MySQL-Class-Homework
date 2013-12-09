@@ -139,7 +139,7 @@
 					#
 					###################################################################################
 
-					echo 'it worked' . "\n";
+					echo 'it worked!' . "\n" . "You have successfully inserted a user into DB" . "\n";
 
 					//session_start data... store it for other pages.  Specifically for the success.php page
 					session_start();
@@ -147,31 +147,89 @@
 					$_SESSION['firstname']   = $_POST['firstname'];
 
 					//query database for user_id value that was just created
-					$uID = "SELECT user_id, last_name, first_name FROM student WHERE first_name = '$fn' and last_name = '$ln' ";
-					echo $uID;
+					$uID = "SELECT user_id, last_name, first_name FROM student WHERE first_name = '$fn' and last_name = '$ln' and middle_initial = '$mn' and street = '$st' and city = '$ct' and state = '$S' and zip = '$zp' and telephone = '$ph' ";
+					//echo $uID;						//DEBUGING PURPOSES
 					$r2 = @mysqli_query($dbc, $uID);
 					while($stuUserId = mysqli_fetch_array($r2, MYSQLI_ASSOC)) {
 						echo " \n" . 'The student id just entered is: ';
 						echo $stuUserId['user_id'];
-					}  //end While statement
+
+						############################################
+						#
+						#	Now lets put rest of form data into
+						#		stu_interst table
+						#
+						#
+						################################################
+
+	//  _   _  ___________ _____ 
+	// | | | ||  ___| ___ \  ___|
+	// | |_| || |__ | |_/ / |__  
+	// |  _  ||  __||    /|  __| 
+	// | | | || |___| |\ \| |___ 
+	// \_| |_/\____/\_| \_\____/ 
+	                          
+						// //Create db values for plan array:
+						// 	//this probably is wrong:
+						if(!empty($_POST['plan'][0]) && !empty($_POST['plan'][1])) {
+							$day = 1;
+							$night = 1;
+						} else if(!empty($_POST['plan'][0])) {
+							$day = 1;
+							if(!empty($_POST['plan'][1])) {
+								$night = 1;
+							} else {
+								$night = 0;
+							};
+						} else{
+							$day = 0;
+							$night = 0;
+						}
+						 // $day = mysqli_real_escape_string($dbc, trim($_POST['plan'][0]));
+						 // $night = mysqli_real_escape_string($dbc, trim($_POST['plan'][1]));
+						
+
+
+						//Check for a comment:
+						if (empty($comments)){
+							$cm = null;
+						} else{
+							$cm = mysqli_real_escape_string($dbc, trim($_POST['comments']));
+						}
+
+						echo $cm . "\n"; 						//DEBUGGING PURPOSES
+						echo $day . "\n"; 						//DEBUGGING PURPOSES
+						echo $night . "\n"; 					//DEBUGGING PURPOSES
+						echo "this is the plan values" . "\n";	//DEBUGGING PURPOSES
+						echo $_POST['plan'][0] . "\n";			//DEBUGGING PURPOSES
+						echo $_POST['plan'][1] . "\n";			//DEBUGGING PURPOSES
+						echo $_POST['plan'] . "\n";				//DEBUGGING PURPOSES
+						echo "day empty value=" . empty($_POST['plan'][0]) . "\n";	//DEBUGGING PURPOSES
+						echo "night empty value=" . empty($_POST['plan'][1]) . "\n";	//DEBUGGING PURPOSES
+
+					}  //end While $stuUserId = user_id statement 
 					
 					//go to success.php
 					#header('Location: success.php');
 					#exit();
 				} else { //The Query did not run OK
 					echo 'system error';
-
-					//debugging message:
-					echo mysqli_error($dbc) . '\n' . $q;
+					echo mysqli_error($dbc) . '\n' . $q; 	//DEBUGING PURPOSES
 				} //end of if $r
 
 				mysqli_close($dbc); //Close the DB connection
 			} //end of no records match, insert new record
 			else{ // if record has already been submitted
-				echo "\n" . "record exists!";
+					//      _             _            _               _     _         
+					//     | |           | |          | |             (_)   | |      _ 
+					//  ___| |_ _   _  __| | ___ _ __ | |_    _____  ___ ___| |_ ___(_)
+					// / __| __| | | |/ _` |/ _ \ '_ \| __|  / _ \ \/ / / __| __/ __|  
+					// \__ \ |_| |_| | (_| |  __/ | | | |_  |  __/>  <| \__ \ |_\__ \_ 
+					// |___/\__|\__,_|\__,_|\___|_| |_|\__|  \___/_/\_\_|___/\__|___(_)
+				echo "\n" . "student exists!";
 				//query database for user_id value that was just created
-				$uID = "SELECT user_id, last_name, first_name FROM student WHERE first_name = '$fn' and last_name = '$ln' ";
-				echo $uID;
+				$uID = "SELECT user_id, last_name, first_name FROM student WHERE first_name = '$fn' and last_name = '$ln' and middle_initial = '$mn' and street = '$st' and city = '$ct' and state = '$S' and zip = '$zp' and telephone = '$ph' ";
+				//echo $uID;								//DEBUGING PURPOSES
 				$r2 = @mysqli_query($dbc, $uID);
 				while($stuUserId = mysqli_fetch_array($r2, MYSQLI_ASSOC)) {
 					echo " \n" . 'The student id just entered is: ';
