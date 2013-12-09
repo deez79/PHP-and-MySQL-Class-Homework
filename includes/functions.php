@@ -26,7 +26,7 @@ function dropdownSelected($dropdownName, $value){ //dropdowns selected will stay
 }
 
 
-function valid($var){
+function valid($var){  //this funciton is not used, and will most likely be removed.
 	if(!isset($var)){
 		echo '<p class="error"> You must enter ' . $var . "!";
 	};
