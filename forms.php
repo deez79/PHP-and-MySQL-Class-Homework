@@ -112,7 +112,9 @@
 
 		if (empty($errors)) { //if there are no errors
 
-			//register user into database
+			####################################
+			#	register user into database
+			####################################
 
 			//check for duplicates:
 			//create query:
@@ -120,6 +122,7 @@
 				//echo 'This is the duplicate check query' . $qDup; //DEBUGING PURPOSES
 
 			$rDupCheck = @mysqli_query($dbc, $qDup); //run the query
+			
 			//check to see if entry exists
 			$num = mysqli_num_rows($rDupCheck); //create $num to see how many times data exist in DB.
 			//if statement for how to treat results:
@@ -128,7 +131,7 @@
 				//create Insert query
 				$q = "INSERT INTO student VALUES (null, '$ln', '$fn', '$mn', '$st', '$ct', '$S', '$zp', '$ph', '$ma', '$mi')";
 				$r = @mysqli_query($dbc, $q); //run the query
-				if ($r) {//If it ran ok
+				if ($r) {//If data is successfully inserted into DB
 					
 					##################################################################################
 					#
@@ -139,7 +142,7 @@
 					#
 					###################################################################################
 
-					echo 'it worked!' . "\n" . "You have successfully inserted a user into DB" . "\n";
+					//echo 'it worked!' . "\n" . "You have successfully inserted a user into DB" . "\n"; //DEBUGING PURPOSES
 
 					//session_start data... store it for other pages.  Specifically for the success.php page
 					session_start();
@@ -148,11 +151,14 @@
 
 					//query database for user_id value that was just created
 					$uID = "SELECT user_id, last_name, first_name FROM student WHERE first_name = '$fn' and last_name = '$ln' and middle_initial = '$mn' and street = '$st' and city = '$ct' and state = '$S' and zip = '$zp' and telephone = '$ph' ";
-					//echo $uID;						//DEBUGING PURPOSES
+					//echo $uID;												//DEBUGING PURPOSES
 					$r2 = @mysqli_query($dbc, $uID);
 					while($stuUserId = mysqli_fetch_array($r2, MYSQLI_ASSOC)) {
-						echo " \n" . 'The student id just entered is: ';
-						echo $stuUserId['user_id'] . "\n";
+						// echo " \n" . 'The student id just entered is: ';		//DEBUGING PURPOSES
+						// echo $stuUserId['user_id'] . "\n";					//DEBUGING PURPOSES
+						
+						//create user_id variable for stu_interest query
+						$sUserId = $stuUserId['user_id'];
 
 						############################################
 						#
@@ -161,15 +167,8 @@
 						#
 						#
 						################################################
-
-	//  _   _  ___________ _____ 
-	// | | | ||  ___| ___ \  ___|
-	// | |_| || |__ | |_/ / |__  
-	// |  _  ||  __||    /|  __| 
-	// | | | || |___| |\ \| |___ 
-	// \_| |_/\____/\_| \_\____/ 
 	                          
-						// //Create db values for plan array:
+						//Create db values for plan array:
 						if(!empty($_POST['plan'][0]) && !empty($_POST['plan'][1])) {
 							$day = 1;
 							$night = 1;
@@ -184,6 +183,10 @@
 							$day = 0;
 							$night = 0;
 						}
+
+						//create db values for classesPer
+						$cpS = $_REQUEST['number'];
+
 
 						//Create DB values for info array:
 						//first create default values:
@@ -201,36 +204,6 @@
 						$sta = 0;
 						$tra = 0;
 						$deb = 0;
-
-						####################################
-						#
-						#	this is on the choping block
-						#
-						#
-
-						// //$infoDBvarriables = array('$add', '$fin' , '$ath', '$int', '$see', '$lib', '$art', '$hon', '$clu', '$aca', '$hou', '$sta', '$tra', '$deb');
-						// $boxValues = array('admissions' => 'add', 'aid' => 'fin', 'athletics' => 'ath', 'interntional' => 'int', 'seek' => 'see', 'library' => 'lib', 'arts' => 'art', 'honors' => 'hon', 'clubs' => 'clu', 'academic' => 'aca', 'housing' =>'hou', 'starr' => 'sta' , 'trading' => 'tra', 'debate' => 'deb');
-						// $value = array('admissions', 'aid', 'athletics', 'interntional', 'seek', 'library', 'arts', 'honors', 'clubs', 'academic', 'housing', 'starr', 'trading', 'debate' );
-						
-						// //foreach loop to cycle through info checkboxes
-						// echo "\n" . 'foreach for checkbox info section' . "\n";
-						// foreach ($_POST['info'] as $boxName){//cycle through info array to see if any are clicked
-						// 	echo 'boxname= ' . $boxName . "\n";
-						// 	foreach($boxValues as $name => $on){
-						// 		$on = 0;
-						// 		echo 'boxName= ' . $boxName . ' and ' . 'name= ' . $name . "\n" . 'on=' . $on . "\n";
-						// 		if($boxName == $name){
-						// 			echo "it's changing?" ."\n";
-						// 			$on = 1;
-						// 			echo 'on value now equals= ' . $on . "\n";
-						// 		}
-						// 	}
-						// };
-						#
-						#
-						#	end of choping block
-						#
-						###############################################
 
 						//change values if checked  (USE SWITCH!!!)
 						foreach ($_POST['info'] as $boxName){
@@ -294,8 +267,6 @@
 								$deb = 0;			
 							}  //end Switch
 						} //end foreach with $boxName
-						
-
 
 						//Check for a comment:
 						if (empty($comments)){
@@ -308,23 +279,24 @@
 						#
 						# 	Debuging for stu_interest table
 						#
-						// echo $cm . "\n"; 					//DEBUGGING PURPOSES
-						// echo $day . "\n"; 					//DEBUGGING PURPOSES
-						// echo $night . "\n"; 					//DEBUGGING PURPOSES
-						echo "add" . $add . "\n";						//DEBUGGING PURPOSES
-						echo "fin" . $fin . "\n";						//DEBUGGING PURPOSES
-						echo "ath" . $ath . "\n";						//DEBUGGING PURPOSES
-						echo "int" . $int . "\n";						//DEBUGGING PURPOSES
-						echo "see" . $see . "\n";						//DEBUGGING PURPOSES
-						echo "lib" . $lib . "\n";						//DEBUGGING PURPOSES
-						echo "art" . $art . "\n";						//DEBUGGING PURPOSES
-						echo "hon" . $hon . "\n";						//DEBUGGING PURPOSES
-						echo "clu" . $clu . "\n";						//DEBUGGING PURPOSES
-						echo "aca" . $aca . "\n";						//DEBUGGING PURPOSES
-						echo "hou" . $hou . "\n";						//DEBUGGING PURPOSES
-						echo "sta" . $sta . "\n";						//DEBUGGING PURPOSES
-						echo "tra" . $tra . "\n";						//DEBUGGING PURPOSES
-						echo "deb" . $deb . "\n";						//DEBUGGING PURPOSES
+						// echo $cm . "\n"; 								//DEBUGGING PURPOSES
+						// echo $day . "\n"; 								//DEBUGGING PURPOSES
+						// echo $night . "\n"; 								//DEBUGGING PURPOSES
+						// echo "add" . $add . "\n";						//DEBUGGING PURPOSES
+						// echo "fin" . $fin . "\n";						//DEBUGGING PURPOSES
+						// echo "ath" . $ath . "\n";						//DEBUGGING PURPOSES
+						// echo "int" . $int . "\n";						//DEBUGGING PURPOSES
+						// echo "see" . $see . "\n";						//DEBUGGING PURPOSES
+						// echo "lib" . $lib . "\n";						//DEBUGGING PURPOSES
+						// echo "art" . $art . "\n";						//DEBUGGING PURPOSES
+						// echo "hon" . $hon . "\n";						//DEBUGGING PURPOSES
+						// echo "clu" . $clu . "\n";						//DEBUGGING PURPOSES
+						// echo "aca" . $aca . "\n";						//DEBUGGING PURPOSES
+						// echo "hou" . $hou . "\n";						//DEBUGGING PURPOSES
+						// echo "sta" . $sta . "\n";						//DEBUGGING PURPOSES
+						// echo "tra" . $tra . "\n";						//DEBUGGING PURPOSES
+						// echo "deb" . $deb . "\n";						//DEBUGGING PURPOSES
+						// echo $cpS . "\n"; 								//DEBUGGING PURPOSES
 						
 						#
 						#
@@ -332,11 +304,29 @@
 						#
 						##################################################################
 
+
+						//query database.  INSERT all the values for Table 2
+						$qt2 = "INSERT INTO stu_interest VALUES (null, '$sUserId', '$day', '$night', '$cpS', '$add', '$fin' , '$ath', '$int', '$see', '$lib', '$art', '$hon', '$clu', '$aca', '$hou', '$sta', '$tra', '$deb', '$cm')";
+						echo $qt2;						//DEBUGING PURPOSES
+						$r3 = @mysqli_query($dbc, $qt2);
+
+
+						###################################################
+						#
+						#
+						#	Finally, load success.php if all else works
+						#
+						#
+						###################################################
+
+						//go to success.php
+						header('Location: success.php');
+						exit();
+
 					}  //end While $stuUserId = user_id statement 
 					
-					//go to success.php
-					#header('Location: success.php');
-					#exit();
+
+
 				} else { //The Query did not run OK
 					echo 'system error';
 					echo mysqli_error($dbc) . '\n' . $q; 	//DEBUGING PURPOSES
@@ -528,10 +518,10 @@
 						<p>
 						<label>
 							<select name="number" tabindex="110" value="<?php echo $number; ?>">
-								<option value="one" <?php dropdownSelected("number", "one") ?> >1</option>
-								<option value="two" <?php dropdownSelected("number", "two") ?> >2</option>
-								<option value="three" <?php dropdownSelected("number", "three") ?> >3</option>
-								<option value="four" <?php dropdownSelected("number", "four") ?> >4</option>
+								<option value="1" <?php dropdownSelected("number", "1") ?> >1</option>
+								<option value="2" <?php dropdownSelected("number", "2") ?> >2</option>
+								<option value="3" <?php dropdownSelected("number", "3") ?> >3</option>
+								<option value="4" <?php dropdownSelected("number", "4") ?> >4</option>
 							</select>
 							&nbsp course&#40s&#41 per semester
 						</label>
