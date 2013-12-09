@@ -23,8 +23,7 @@
 	#	This IF Statement is going to check it anything was
 	#		submitted.  If it was, it will Post to
 	#		the DB.  
-	#		(currently it only posts the info for the student table)
-	#
+	#		
 	#
 	###################################################
 
@@ -113,37 +112,25 @@
 		if (empty($errors)) { //if there are no errors
 
 			####################################
-			#	register user into database
+			#	register Student into database
 			####################################
 
 			//check for duplicates:
-			//create query:
+			//create SELECT query to see if Student already exists:
 			$qDup = "SELECT user_id FROM student WHERE last_name = '$ln' and first_name = '$fn' and middle_initial = '$mn' and street = '$st' and city = '$ct' and state = '$S' and zip = '$zp' and telephone = '$ph' and major = '$ma' and minor = '$mi' ";
-				//echo 'This is the duplicate check query' . $qDup; //DEBUGING PURPOSES
-
 			$rDupCheck = @mysqli_query($dbc, $qDup); //run the query
 			
 			//check to see if entry exists
 			$num = mysqli_num_rows($rDupCheck); //create $num to see how many times data exist in DB.
+
 			//if statement for how to treat results:
 			if($num < 1){ //if there are no records that match the form yet insert into DB
 
-				//create Insert query
+				//create Insert query for student table
 				$q = "INSERT INTO student VALUES (null, '$ln', '$fn', '$mn', '$st', '$ct', '$S', '$zp', '$ph', '$ma', '$mi')";
 				$r = @mysqli_query($dbc, $q); //run the query
 				if ($r) {//If data is successfully inserted into DB
 					
-					##################################################################################
-					#
-					# 	Data from form is now submitted into student table.  What follows should 
-					#		be an attempt to get and submit data into the stu_interest table.
-					#		At this point, I haven't segmented the form into two steps, but that may 
-					#		have to happen.
-					#
-					###################################################################################
-
-					//echo 'it worked!' . "\n" . "You have successfully inserted a user into DB" . "\n"; //DEBUGING PURPOSES
-
 					//session_start data... store it for other pages.  Specifically for the success.php page
 					session_start();
 					$_SESSION['lastname']   = $_POST['lastname'];
@@ -151,11 +138,9 @@
 
 					//query database for user_id value that was just created
 					$uID = "SELECT user_id, last_name, first_name FROM student WHERE first_name = '$fn' and last_name = '$ln' and middle_initial = '$mn' and street = '$st' and city = '$ct' and state = '$S' and zip = '$zp' and telephone = '$ph' ";
-					//echo $uID;												//DEBUGING PURPOSES
+
 					$r2 = @mysqli_query($dbc, $uID);
 					while($stuUserId = mysqli_fetch_array($r2, MYSQLI_ASSOC)) {
-						// echo " \n" . 'The student id just entered is: ';		//DEBUGING PURPOSES
-						// echo $stuUserId['user_id'] . "\n";					//DEBUGING PURPOSES
 						
 						//create user_id variable for stu_interest query
 						$sUserId = $stuUserId['user_id'];
@@ -250,7 +235,7 @@
 								case 'debate':	
 									$deb = 1;
 									break;
-							default:
+							default: //this could probably just be break.
 								$add = 0;
 								$fin = 0;
 								$ath = 0;
@@ -275,41 +260,11 @@
 							$cm = mysqli_real_escape_string($dbc, trim($_POST['comments']));
 						}
 
-						#################################################################
-						#
-						# 	Debuging for stu_interest table
-						#
-						// echo $cm . "\n"; 								//DEBUGGING PURPOSES
-						// echo $day . "\n"; 								//DEBUGGING PURPOSES
-						// echo $night . "\n"; 								//DEBUGGING PURPOSES
-						// echo "add" . $add . "\n";						//DEBUGGING PURPOSES
-						// echo "fin" . $fin . "\n";						//DEBUGGING PURPOSES
-						// echo "ath" . $ath . "\n";						//DEBUGGING PURPOSES
-						// echo "int" . $int . "\n";						//DEBUGGING PURPOSES
-						// echo "see" . $see . "\n";						//DEBUGGING PURPOSES
-						// echo "lib" . $lib . "\n";						//DEBUGGING PURPOSES
-						// echo "art" . $art . "\n";						//DEBUGGING PURPOSES
-						// echo "hon" . $hon . "\n";						//DEBUGGING PURPOSES
-						// echo "clu" . $clu . "\n";						//DEBUGGING PURPOSES
-						// echo "aca" . $aca . "\n";						//DEBUGGING PURPOSES
-						// echo "hou" . $hou . "\n";						//DEBUGGING PURPOSES
-						// echo "sta" . $sta . "\n";						//DEBUGGING PURPOSES
-						// echo "tra" . $tra . "\n";						//DEBUGGING PURPOSES
-						// echo "deb" . $deb . "\n";						//DEBUGGING PURPOSES
-						// echo $cpS . "\n"; 								//DEBUGGING PURPOSES
-						
-						#
-						#
-						#
-						#
-						##################################################################
 
-
-						//query database.  INSERT all the values for Table 2
+						//query database.   create INSERT query for all the values for Table 2
 						$qt2 = "INSERT INTO stu_interest VALUES (null, '$sUserId', '$day', '$night', '$cpS', '$add', '$fin' , '$ath', '$int', '$see', '$lib', '$art', '$hon', '$clu', '$aca', '$hou', '$sta', '$tra', '$deb', '$cm')";
-						echo $qt2;						//DEBUGING PURPOSES
+						// run query
 						$r3 = @mysqli_query($dbc, $qt2);
-
 
 						###################################################
 						#
@@ -320,6 +275,7 @@
 						###################################################
 
 						//go to success.php
+						mysql_close($dbc); //close the connection to the DB
 						header('Location: success.php');
 						exit();
 
@@ -344,26 +300,31 @@
 				echo "\n" . "student exists!";
 				//query database for user_id value that was just created
 				$uID = "SELECT user_id, last_name, first_name FROM student WHERE first_name = '$fn' and last_name = '$ln' and middle_initial = '$mn' and street = '$st' and city = '$ct' and state = '$S' and zip = '$zp' and telephone = '$ph' ";
-				//echo $uID;								//DEBUGING PURPOSES
+				
 				$r2 = @mysqli_query($dbc, $uID);
 				while($stuUserId = mysqli_fetch_array($r2, MYSQLI_ASSOC)) {
 					echo " \n" . 'The student id just entered is: ';
 					echo $stuUserId['user_id'];
-				}  //end While statement
+
+					##################################################################
+					#
+					#	Should probably figure out how to handle double entry.  
+					#
+					###################################################################
+
+				} //end While statement
 			} //end else of if record has already been submitted
 
 		}else {// if there are errors, report the errors
 			echo 'Something is wrong!' . "\n";
 			echo '<script language="javascript" type="text/javascript">window.onload = function(){validateform();}; </script>';
-			echo 'These are the errors:';
 			foreach ($errors as $msg) {
-				echo "- $msg";   
-
+				echo "- $msg" . "\n" ;   
 			} //end foreach
 			echo "\n" . 'Try again!';
 		} //end of if(empty($errors)) IF.
 		mysql_close($dbc); //close the connection to the DB
-	}  //end of the main submit conditional
+	}  //end of the main submit conditional [if($_SERVER['REQUEST_METHOD'] == 'POST')]
 
 	?>
 </head>
@@ -478,12 +439,8 @@
 					</p>
 			</div> <!--end right_center_box -->
 <?php 
-#	                _          __       _             _            _     _        _     _      _ 
-#	               | |        / _|     | |           | |          | |   | |      | |   | |    | |
-#	  ___ _ __   __| |   ___ | |_   ___| |_ _   _  __| | ___ _ __ | |_  | |_ __ _| |__ | | ___| |
-#	 / _ \ '_ \ / _` |  / _ \|  _| / __| __| | | |/ _` |/ _ \ '_ \| __| | __/ _` | '_ \| |/ _ \ |
-#	|  __/ | | | (_| | | (_) | |   \__ \ |_| |_| | (_| |  __/ | | | |_  | || (_| | |_) | |  __/_|
-#	 \___|_| |_|\__,_|  \___/|_|   |___/\__|\__,_|\__,_|\___|_| |_|\__|  \__\__,_|_.__/|_|\___(_)
+#
+#
 #	                                                                                             
 #	end of student table!		                                                                                             
 #
@@ -491,16 +448,9 @@
 
 #########################################
 #
-#	 _                _       _                      __       _           _       _                     _     _        _     _        
-#	| |              (_)     (_)                    / _|     | |         (_)     | |                   | |   | |      | |   | |     _ 
-#	| |__   ___  __ _ _ _ __  _ _ __   __ _    ___ | |_   ___| |_ _   _   _ _ __ | |_ ___ _ __ ___  ___| |_  | |_ __ _| |__ | | ___(_)
-#	| '_ \ / _ \/ _` | | '_ \| | '_ \ / _` |  / _ \|  _| / __| __| | | | | | '_ \| __/ _ \ '__/ _ \/ __| __| | __/ _` | '_ \| |/ _ \  
-#	| |_) |  __/ (_| | | | | | | | | | (_| | | (_) | |   \__ \ |_| |_| | | | | | | ||  __/ | |  __/\__ \ |_  | || (_| | |_) | |  __/_ 
-#	|_.__/ \___|\__, |_|_| |_|_|_| |_|\__, |  \___/|_|   |___/\__|\__,_| |_|_| |_|\__\___|_|  \___||___/\__|  \__\__,_|_.__/|_|\___(_)
-#	             __/ |                 __/ |                         ______                                                           
-#	            |___/                 |___/                         |______|                                                          
-#
 #	begin of stu_interest table:
+#
+#
 #
 ?>
 
@@ -598,6 +548,7 @@
 			</p>
 
 			</div> <!--End upper_bottom_box-->
+
 		</form>  <!--end ALL FORM-->
 	</div> <!-- End of Container div-->
 </body>
