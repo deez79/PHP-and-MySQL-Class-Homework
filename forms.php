@@ -152,7 +152,7 @@
 					$r2 = @mysqli_query($dbc, $uID);
 					while($stuUserId = mysqli_fetch_array($r2, MYSQLI_ASSOC)) {
 						echo " \n" . 'The student id just entered is: ';
-						echo $stuUserId['user_id'];
+						echo $stuUserId['user_id'] . "\n";
 
 						############################################
 						#
@@ -170,7 +170,6 @@
 	// \_| |_/\____/\_| \_\____/ 
 	                          
 						// //Create db values for plan array:
-						// 	//this probably is wrong:
 						if(!empty($_POST['plan'][0]) && !empty($_POST['plan'][1])) {
 							$day = 1;
 							$night = 1;
@@ -185,9 +184,59 @@
 							$day = 0;
 							$night = 0;
 						}
-						 // $day = mysqli_real_escape_string($dbc, trim($_POST['plan'][0]));
-						 // $night = mysqli_real_escape_string($dbc, trim($_POST['plan'][1]));
+
+						//Create DB values for info array:
+						//first create default values:
+						$add = 0;
+						$fin = 0;
+						$ath = 0;
+						$int = 0;
+						$see = 0;
+						$lib = 0;
+						$art = 0;
+						$hon = 0;
+						$clu = 0;
+						$aca = 0;
+						$hou = 0;
+						$sta = 0;
+						$tra = 0;
+						$deb = 0;
+
+						//$infoDBvarriables = array('$add', '$fin' , '$ath', '$int', '$see', '$lib', '$art', '$hon', '$clu', '$aca', '$hou', '$sta', '$tra', '$deb');
+						$boxValues = array('admissions' => $add, 'aid' => $fin, 'athletics' => $ath, 'interntional' => $int, 'seek' => $see, 'library' => $lib, 'arts' => $art, 'honors' => $hon, 'clubs' => $clu, 'academic' => $aca, 'housing' =>$hou, 'starr' => $sta , 'trading' => $tra, 'debate' => $deb);
+						$value = array('admissions', 'aid', 'athletics', 'interntional', 'seek', 'library', 'arts', 'honors', 'clubs', 'academic', 'housing', 'starr', 'trading', 'debate' );
 						
+						//foreach loop to cycle through info checkboxes
+						echo "\n" . 'foreach for checkbox info section' . "\n";
+						foreach ($_POST['info'] as $boxName){//cycle through info array to see if any are clicked
+							echo 'boxname= ' . $boxName . "\n";
+							foreach($boxValues as $name => $on){
+								$on = 0;
+								echo 'boxName= ' . $boxName . ' and ' . 'name= ' . $name . "\n" . 'on=' . $on . "\n";
+								if($boxName == $name){
+									echo "it's changing?" ."\n";
+									$on = 1;
+									echo 'on value now equals= ' . $on . "\n";
+								}
+							}
+
+
+							//for ($i=0; $i < 14 ; $i++) {
+								// $i = 0; 
+								// ($boxName == $value[$i]){
+								// echo 'boxName ' . $boxName;
+								// echo 'value[' .$i . '] ' . $value[$i];
+								// echo 'dbVal' . $dbVal;
+								// $dbVal = 1;
+								// };
+							//};
+
+						};
+
+						//change values if checked
+						if(!empty($_POST['info'][0])){
+							$add = 1;
+						}
 
 
 						//Check for a comment:
@@ -197,15 +246,33 @@
 							$cm = mysqli_real_escape_string($dbc, trim($_POST['comments']));
 						}
 
-						echo $cm . "\n"; 						//DEBUGGING PURPOSES
-						echo $day . "\n"; 						//DEBUGGING PURPOSES
-						echo $night . "\n"; 					//DEBUGGING PURPOSES
-						echo "this is the plan values" . "\n";	//DEBUGGING PURPOSES
-						echo $_POST['plan'][0] . "\n";			//DEBUGGING PURPOSES
-						echo $_POST['plan'][1] . "\n";			//DEBUGGING PURPOSES
-						echo $_POST['plan'] . "\n";				//DEBUGGING PURPOSES
-						echo "day empty value=" . empty($_POST['plan'][0]) . "\n";	//DEBUGGING PURPOSES
-						echo "night empty value=" . empty($_POST['plan'][1]) . "\n";	//DEBUGGING PURPOSES
+						#################################################################
+						#
+						# 	Debuging for stu_interest table
+						#
+						// echo $cm . "\n"; 					//DEBUGGING PURPOSES
+						// echo $day . "\n"; 					//DEBUGGING PURPOSES
+						// echo $night . "\n"; 					//DEBUGGING PURPOSES
+						echo "add" . $add . "\n";						//DEBUGGING PURPOSES
+						echo "fin" . $fin . "\n";						//DEBUGGING PURPOSES
+						echo "ath" . $ath . "\n";						//DEBUGGING PURPOSES
+						echo "int" . $int . "\n";						//DEBUGGING PURPOSES
+						echo "see" . $see . "\n";						//DEBUGGING PURPOSES
+						echo "lib" . $lib . "\n";						//DEBUGGING PURPOSES
+						echo "art" . $art . "\n";						//DEBUGGING PURPOSES
+						echo "hon" . $hon . "\n";						//DEBUGGING PURPOSES
+						echo "clu" . $clu . "\n";						//DEBUGGING PURPOSES
+						echo "aca" . $aca . "\n";						//DEBUGGING PURPOSES
+						echo "hou" . $hou . "\n";						//DEBUGGING PURPOSES
+						echo "sta" . $sta . "\n";						//DEBUGGING PURPOSES
+						echo "tra" . $tra . "\n";						//DEBUGGING PURPOSES
+						echo "deb" . $deb . "\n";						//DEBUGGING PURPOSES
+						
+						#
+						#
+						#
+						#
+						##################################################################
 
 					}  //end While $stuUserId = user_id statement 
 					
