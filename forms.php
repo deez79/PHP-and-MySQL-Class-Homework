@@ -202,41 +202,99 @@
 						$tra = 0;
 						$deb = 0;
 
-						//$infoDBvarriables = array('$add', '$fin' , '$ath', '$int', '$see', '$lib', '$art', '$hon', '$clu', '$aca', '$hou', '$sta', '$tra', '$deb');
-						$boxValues = array('admissions' => $add, 'aid' => $fin, 'athletics' => $ath, 'interntional' => $int, 'seek' => $see, 'library' => $lib, 'arts' => $art, 'honors' => $hon, 'clubs' => $clu, 'academic' => $aca, 'housing' =>$hou, 'starr' => $sta , 'trading' => $tra, 'debate' => $deb);
-						$value = array('admissions', 'aid', 'athletics', 'interntional', 'seek', 'library', 'arts', 'honors', 'clubs', 'academic', 'housing', 'starr', 'trading', 'debate' );
+						####################################
+						#
+						#	this is on the choping block
+						#
+						#
+
+						// //$infoDBvarriables = array('$add', '$fin' , '$ath', '$int', '$see', '$lib', '$art', '$hon', '$clu', '$aca', '$hou', '$sta', '$tra', '$deb');
+						// $boxValues = array('admissions' => 'add', 'aid' => 'fin', 'athletics' => 'ath', 'interntional' => 'int', 'seek' => 'see', 'library' => 'lib', 'arts' => 'art', 'honors' => 'hon', 'clubs' => 'clu', 'academic' => 'aca', 'housing' =>'hou', 'starr' => 'sta' , 'trading' => 'tra', 'debate' => 'deb');
+						// $value = array('admissions', 'aid', 'athletics', 'interntional', 'seek', 'library', 'arts', 'honors', 'clubs', 'academic', 'housing', 'starr', 'trading', 'debate' );
 						
-						//foreach loop to cycle through info checkboxes
-						echo "\n" . 'foreach for checkbox info section' . "\n";
-						foreach ($_POST['info'] as $boxName){//cycle through info array to see if any are clicked
-							echo 'boxname= ' . $boxName . "\n";
-							foreach($boxValues as $name => $on){
-								$on = 0;
-								echo 'boxName= ' . $boxName . ' and ' . 'name= ' . $name . "\n" . 'on=' . $on . "\n";
-								if($boxName == $name){
-									echo "it's changing?" ."\n";
-									$on = 1;
-									echo 'on value now equals= ' . $on . "\n";
-								}
-							}
+						// //foreach loop to cycle through info checkboxes
+						// echo "\n" . 'foreach for checkbox info section' . "\n";
+						// foreach ($_POST['info'] as $boxName){//cycle through info array to see if any are clicked
+						// 	echo 'boxname= ' . $boxName . "\n";
+						// 	foreach($boxValues as $name => $on){
+						// 		$on = 0;
+						// 		echo 'boxName= ' . $boxName . ' and ' . 'name= ' . $name . "\n" . 'on=' . $on . "\n";
+						// 		if($boxName == $name){
+						// 			echo "it's changing?" ."\n";
+						// 			$on = 1;
+						// 			echo 'on value now equals= ' . $on . "\n";
+						// 		}
+						// 	}
+						// };
+						#
+						#
+						#	end of choping block
+						#
+						###############################################
 
-
-							//for ($i=0; $i < 14 ; $i++) {
-								// $i = 0; 
-								// ($boxName == $value[$i]){
-								// echo 'boxName ' . $boxName;
-								// echo 'value[' .$i . '] ' . $value[$i];
-								// echo 'dbVal' . $dbVal;
-								// $dbVal = 1;
-								// };
-							//};
-
-						};
-
-						//change values if checked
-						if(!empty($_POST['info'][0])){
-							$add = 1;
-						}
+						//change values if checked  (USE SWITCH!!!)
+						foreach ($_POST['info'] as $boxName){
+							switch($boxName){
+								case 'admissions':
+									$add = 1;
+									break;
+								case 'aid'	:
+									$fin = 1;
+									break;								
+								case 'athletics':
+									$ath = 1;
+									break;
+								case 'interntional':
+									$int = 1;
+									break;
+								case 'seek':
+									$see = 1;
+									break;
+								case 'library':
+									$lib = 1;
+									break;
+								case 'arts' :	
+									$art = 1;
+									break;
+								case 'honors':	
+									$hon = 1;
+									break;
+								case 'clubs':	
+									$clu = 1;
+									break;
+								case 'academic':	
+									$aca = 1;
+									break;
+								case 'housing':	
+									$hou = 1;
+									break;
+								case 'starr':	
+									$sta = 1;
+									break;
+								case 'trading':
+									$tra = 1;
+									break;
+								case 'debate':	
+									$deb = 1;
+									break;
+							default:
+								$add = 0;
+								$fin = 0;
+								$ath = 0;
+								$int = 0;
+								$see = 0;
+								$lib = 0;
+								$art = 0;
+								$hon = 0;
+								$clu = 0;
+								$aca = 0;
+								$hou = 0;
+								$sta = 0;
+								$tra = 0;
+								$deb = 0;			
+							}  //end Switch
+						} //end foreach with $boxName
+						
 
 
 						//Check for a comment:
